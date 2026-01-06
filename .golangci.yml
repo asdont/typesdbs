@@ -1,0 +1,115 @@
+version: "2"
+
+linters:
+  default: all
+  disable:
+    - depguard
+    - exhaustive
+    - exhaustruct
+    - noinlineerr
+    - wsl # Устарел, заменён на wsl_v5.
+
+  settings:
+    cyclop:
+      max-complexity: 12
+
+    funlen:
+      lines: 75
+
+    ireturn:
+      allow:
+        - anon
+        - any
+        - empty
+        - error
+        - stdlib
+
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+
+    varnamelen:
+      min-name-length: 3
+      ignore-decls:
+        - e error
+        - g *errgroup.Group
+        - i int
+        - ok bool
+        - r *http.Request
+        - sb strings.Builder
+        - t time.Time
+        - t *time.Time
+        - u *url.URL
+        - u url.URL
+        - v interface{}
+        - wg sync.WaitGroup
+
+    wrapcheck:
+      extra-ignore-sigs:
+        - status.Error
+
+  exclusions:
+    paths:
+      - vendor
+      - internal/proto
+
+    rules:
+      - path: _test\.go
+        linters:
+          - err113
+          - cyclop
+          - dupl
+          - funlen
+          - gochecknoglobals
+          - testpackage
+          - varnamelen
+
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - goimports
+    - golines
+    - gofumpt
+
+  exclusions:
+    paths:
+      - vendor
+      - internal/proto
+
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+        - localmodule
+        - prefix(wba-gitlab.wb.ru)
+        - blank
+        - dot
+        - alias
+
+    gofumpt:
+      extra-rules: true
+
+    golines:
+      max-len: 120
+      shorten-comments: true
+      chain-split-dots: true
+
+issues:
+  max-issues-per-linter: 5
+  max-same-issues: 5
+  fix: true
+
+run:
+  timeout: 5m
+  tests: true
+  allow-parallel-runners: true
+
+output:
+  formats:
+    json:
+      path: codequality.json
+    tab:
+      path: stdout

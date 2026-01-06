@@ -1,0 +1,85 @@
+version: "3"
+
+services:
+  postgres:
+    container_name: tt_postgres
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    ports:
+      - "23330:5432"
+    volumes:
+      - ./scripts/sql/table_pg.sql:/docker-entrypoint-initdb.d/table_pg.sql
+    networks:
+      - tt_db_network
+
+  clickhouse:
+    container_name: tt_clickhouse
+    image: yandex/clickhouse-server
+    restart: unless-stopped
+    environment:
+      - CLICKHOUSE_USER=test
+      - CLICKHOUSE_PASSWORD=test
+      - CLICKHOUSE_DB=test
+    ports:
+      - "23340:8123"
+      - "23341:9000"
+    networks:
+      - tt_db_network
+
+  mysql:
+    container_name: tt_mysql
+    image: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "23350:3306"
+    volumes:
+      - ./scripts/sql/table_mysql.sql:/docker-entrypoint-initdb.d/table_mysql.sql
+    networks:
+      - tt_db_network
+
+  mssql:
+    container_name: tt_mssql
+    image: mcr.microsoft.com/mssql/server
+    restart: unless-stopped
+    environment:
+      SA_PASSWORD: x8OdAaO*NF
+      ACCEPT_EULA: Y
+    ports:
+      - "23360:1433"
+    networks:
+      - tt_db_network
+
+  oracle:
+    container_name: tt_oracle
+    image: container-registry.oracle.com/database/free:latest
+    restart: unless-stopped
+    ports:
+      - "23370:1521"
+    networks:
+      - tt_db_network
+
+  mongodb:
+    container_name: tt_mongodb
+    image: mongo
+    restart: unless-stopped
+    ports:
+      - "23380:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: test
+      MONGO_INITDB_ROOT_PASSWORD: test
+#    volumes:
+#      - ./scripts/sql/table_mongo.js:/docker-entrypoint-initdb.d/table_mongo.js
+    networks:
+      - tt_db_network
+
+networks:
+  tt_db_network:
+    driver: bridge

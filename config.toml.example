@@ -1,0 +1,33 @@
+# See the docker-compose.yml.
+
+[dbs.postgres]
+dsn = "postgres://test:test@localhost:23330/test"
+table = "test_types"
+
+[dbs.clickhouse]
+dsn = "tcp://localhost:23340/test"
+table = "test_types"
+
+[dbs.mysql]
+dsn = "test:test@tcp(localhost:23350)/test"
+table = "test_types"
+
+[dbs.mssql]
+dsn = "sqlserver://sa:Test12345!@localhost:23360?database=test"
+table = "test_types"
+
+[dbs.oracle_service]
+dsn = "user=\"system\" password=\"password\" connectString=\"localhost:23370/FREEPDB1\""
+table = "test_types"
+
+[dbs.oracle_sid]
+dsn = "user=\"C##test\" password=\"test\" connectString=\"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=23371))(CONNECT_DATA=(SID=free)))\""
+table = "test_types"
+
+[dbs.trino]
+dsn = "http://test@localhost:8080?catalog=sqlite&schema=default"
+table = "test_types"
+
+[dbs.sqlite]
+dsn = "test_db.sqlite"
+table = "test_types"
