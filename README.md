@@ -1,4 +1,4 @@
-# Database field types
+# Types of db fields for integration tests
 
 ---
 
